@@ -1,0 +1,432 @@
+/* --- SCROLL POSITION FIX --- */
+html {
+    /* Ensures the scroll glides smoothly instead of jumping */
+    scroll-behavior: smooth;
+}
+
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; /* This kills the horizontal scroll */
+    position: relative; /* Helps contain absolute elements */
+}
+section, 
+#skills, 
+#video-gallery, 
+#graphics-gallery, 
+#contact-section {
+    /* This pushes the landing point down by 100px.
+       Adjust '100px' to match the height of your header exactly. */
+    scroll-margin-top: 160px; 
+}
+
+/*main > section {
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+}*/
+
+:root {
+    /* Your Color Hunt Palette */
+    --bg-dark: #1d1616;      /* Deep Charcoal */
+    --accent-deep: #8e1616;  /* Mahogany */
+    --accent-bright: #d84040; /* Coral Red */
+    --bg-light: #eeeeee;     /* Off-white */
+    
+    --text-on-dark: #eeeeee;
+    --text-on-light: #1d1616;
+    
+    --primary-font: 'Inter', sans-serif;
+    --transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+}
+
+body { 
+    font-family: var(--primary-font); 
+    margin: 0; 
+    line-height: 1.7; 
+    color: var(--text-on-light);
+    background-color: var(--bg-dark); /* Global Background */
+    -webkit-font-smoothing: antialiased;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    position: fixed; 
+    top: 0;
+    left: 0;        /* Explicitly pin to the left */
+    width: 100%;    /* Ensure it spans the full width */
+    
+    /* CRITICAL: A high z-index keeps it above all other layers */
+    z-index: 9999; 
+    
+    background: var(--bg-dark); 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition);
+}
+.logo {
+    text-decoration: none;
+    color: var(--text-on-dark); /* White text in the dark header */
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-transform: lowercase;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    transition: var(--transition); 
+}
+
+.logo span {
+    font-weight: 300;
+    opacity: 0.7;
+    margin-left: 4px;
+    transition: var(--transition);
+}
+
+.logo .dot {
+    color: var(--accent-bright);
+    font-weight: 900;
+    display: inline-block;
+    margin-left: 0px;
+    transition: var(--transition);
+}
+
+/* --- THE HOVER ADDITION --- */
+
+/* 1. Scale the dot and make it glow when the logo is hovered */
+.logo:hover .dot {
+    color: white; 
+    transform: scale(1.5);
+}
+
+.logo:hover {
+    letter-spacing: 0px; /* Slight expansion */
+}
+
+.logo:hover span{
+    opacity: 1;
+    color: var(--accent-bright);
+}
+
+/* Navigation Links */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    color: var(--text-on-dark);
+    text-decoration: none;
+    text-transform: lowercase;
+    font-size: 0.8rem;
+    font-weight: 300; /* 100 was a bit too thin for readability */
+    letter-spacing: 2px;
+    transition: var(--transition);
+}
+
+nav ul li a:hover {
+    color: var(--accent-bright);
+}
+
+/* --- RESPONSIVE NAV STYLES --- */
+
+/* 1. Hide Hamburger on Desktop */
+@media screen and (max-width: 768px) {
+    .menu-toggle {
+        display: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 5px;
+
+        display: flex;
+        z-index: 10001;
+        
+        position: absolute;
+        right: 20px; /* Changed from 5% to 20px to push it further right */
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-on-dark);
+    transition: var(--transition);
+    border-radius: 2px;
+}
+
+/* 2. Mobile Layout (Tablets & Phones) */
+@media screen and (max-width: 768px) {
+    
+    /* Show the hamburger button */
+    .menu-toggle {
+        display: flex;
+        z-index: 10001; /* Ensure it clicks over other elements */
+    }
+
+    /* Reset the Nav positioning */
+    nav ul {
+        position: absolute;
+        top: 100%; /* Push it exactly below the header */
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-dark);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        
+        /* Layout logic */
+        flex-direction: column;
+        align-items: center;
+        gap: 0; /* Remove gap, use padding on links instead */
+        padding: 0;
+        
+        /* Hiding Logic (Closed state) */
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.4s ease-in-out;
+    }
+
+    /* Style the links for mobile touch targets */
+    nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+
+    nav ul li a {
+        display: block;
+        padding: 20px 0;
+        width: 100%;
+        font-size: 1rem; /* Slightly larger for thumb tapping */
+    }
+
+    nav ul li a:hover {
+        background-color: rgba(255,255,255,0.05);
+    }
+
+    /* 3. The "Open" State (Added by JS) */
+    nav ul.active {
+        max-height: 400px; /* Large enough to fit all links */
+        opacity: 1;
+        padding-bottom: 20px; /* Breathing room at bottom */
+    }
+
+    /* Optional: Animate the Hamburger to an 'X' */
+    .menu-toggle.is-active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.is-active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+        background-color: var(--accent-bright);
+    }
+
+    .menu-toggle.is-active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+        background-color: var(--accent-bright);
+    }
+}
+
+.hero {
+    height: 100vh; 
+    width: 100%;
+    background: var(--bg-dark);
+    position: relative; 
+    perspective: 1500px;
+    overflow: hidden; 
+    display: block; 
+    color: var(--text-on-dark);
+}
+
+.hero-content {
+    position: absolute;
+    top: 160px;
+    left: 8%; 
+    text-align: left;
+    z-index: 10; /* Ensures text is always in front of floating cards */
+}
+
+
+.hero-content p:first-of-type {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--accent-bright); /* Coral Red */
+    margin-bottom: 0; /* Brings it closer to the name */
+}
+
+.hero-content h1 {
+    font-size: clamp(4rem, 15vw, 11rem);
+    font-weight: 900;
+    line-height: 0.9;
+    margin: 10px 0;
+    /* Optional: text-stroke effect */
+    -webkit-text-stroke: 1px rgba(255,255,255,0.1); 
+}
+
+.hero-content p:last-of-type {
+    margin-top: 30px;
+    font-size: 1rem;
+    text-transform: lowercase;
+    max-width: 500px;
+    letter-spacing: 4px;
+}
+
+.hero-content p span {
+    font-weight: 900;
+    color: var(--accent-bright);
+    letter-spacing: 2px;
+}
+
+/* If you want the buttons to follow the text to the upper left: */
+.hero-btns {
+    display: flex;
+    justify-content: flex-start; 
+    gap: 40px;
+    margin-top: 30px; /* Space below the H1 */
+    margin-left: 30px;
+}
+
+.btn-primary {
+    text-decoration: none;
+    text-transform: lowercase; /* Matching your header */
+    font-size: 0.9rem;
+    font-weight: 300;          /* Light weight like your nav */
+    letter-spacing: 4px;      /* Elegant spacing */
+    transition: var(--transition);
+    padding: 10px 0;          /* Padding top/bottom only */
+    position: relative;
+}
+
+.btn-primary {
+    color: var(--text-on-dark);
+    text-decoration: none;
+    border-bottom: 2px solid transparent; /* Prevents "jumping" when border appears */
+    transition: all 0.3s ease; /* Smooth "slick" transition */
+}
+
+.btn-primary:hover {
+    color: var(--accent-bright);
+    border-bottom: 2px solid var(--accent-deep);
+    letter-spacing: 3px; 
+    /* The color below will override the color in the border shorthand if needed */
+    border-bottom-color: var(--accent-bright); 
+}
+
+@keyframes float3D {
+    0%, 100% {
+        transform: translateZ(calc(var(--i) * -100px)) translateY(0) rotateY(-20deg) rotateX(10deg);
+    }
+    50% {
+        transform: translateZ(calc(var(--i) * -80px)) translateY(-30px) rotateY(-15deg) rotateX(5deg);
+    }
+}
+
+/* --- THE FLOATING CARDS --- */
+/* Update your .card class to hide image overflows */
+.circle-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65vh; /* Takes up the bottom half of the screen */
+    perspective: 1000px;
+    overflow: visible;
+    /* This creates the "ground" look */
+    z-index: 5;               /* Keep it above hero background but below header */
+    pointer-events: none;
+}
+
+.card {
+    position: absolute;
+    width: 180px;
+    height: 250px;
+    background: var(--bg-dark);
+    border-radius: 10px;
+    overflow: hidden;
+    pointer-events: auto;     /* Forces the card itself to be clickable */
+    cursor: pointer;
+    
+    /* Lay the cards flat on the ground */
+    /* rotateX(70deg) makes them lie down */
+    transform-style: preserve-3d;
+    transform: rotateX(75deg) rotateZ(var(--r)); 
+    transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+    
+    /* Give them a shadow so they look like they are sitting on grass */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+
+    transform-origin: center center; 
+    will-change: transform;
+    
+}
+
+.card:hover {
+    transform: rotateX(0deg) rotateZ(0deg) translateZ(100px) scale(1.2) !important;
+    z-index: 9999 !important;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+    opacity: 1 !important;
+}
+
+.card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+/* --- LIGHTBOX STYLES --- */
+#lightbox {
+    /* KEY FIX: 'fixed' removes it from the bottom of the page and pins it to the screen */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Ensure it sits on top of everything (Header is 9999) */
+    z-index: 10000; 
+    
+    background: rgba(0, 0, 0, 0.9);
+    
+    /* Centering settings */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+}
+
+/* This class is added by JS to show it */
+#lightbox.active {
+    display: flex; 
+}
+
+#lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.close-lightbox {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 3rem;
+    color: white;
+    cursor: pointer;
+}

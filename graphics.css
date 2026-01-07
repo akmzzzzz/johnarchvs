@@ -1,0 +1,154 @@
+/* --- GRAPHICS GALLERY (CONCAVE / CINEMA VIEW) --- */
+#graphics-gallery {
+    min-height: 100vh;
+    width: 100%;
+    background: var(--bg-dark);
+    position: relative;
+    z-index: 5;
+    overflow: hidden; 
+    
+    padding-bottom: 0px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* HEADER */
+.gallery-header {
+    width: 100%;
+    padding: 0 8%;
+    margin-bottom: 20px; 
+    position: relative;
+    z-index: 1; /* Low Z-Index */
+    pointer-events: none; /* Let clicks pass through */
+}
+.gallery-header * { pointer-events: auto; } /* But let text be selectable */
+
+#graphics-gallery h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    color: var(--text-on-dark);
+    text-transform: lowercase;
+    letter-spacing: -1px;
+}
+#graphics-gallery h2 span { color: var(--accent-bright); }
+#graphics-gallery p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 0;
+    max-width: 100%;
+}
+
+/* --- THE 3D SCENE --- */
+.carousel-scene {
+    width: 100%;
+    height: 600px;
+    perspective: 2000px; 
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -20px;
+    
+    position: relative;
+    z-index: 10; /* Higher than header */
+    pointer-events: none; /* The container is invisible, let clicks pass to cards */
+}
+
+/* THE SPINNER */
+.carousel {
+    width: 300px;  
+    height: 420px; 
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.1, 0.9, 0.2, 1); 
+}
+
+/* THE CARDS */
+.graphic-item {
+    /* ... existing styles ... */
+    position: absolute;
+    width: 280px; height: 400px; 
+    left: 10px; top: 10px;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    backface-visibility: hidden;
+    opacity: 1;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    
+    pointer-events: auto; /* CRITICAL: Re-enable clicks on cards */
+    will-change: transform;
+    z-index: 1; 
+}
+
+.graphic-item.active-card {
+    z-index: 1000 !important;
+}
+.graphic-item:hover {
+    box-shadow: 0 0 40px rgba(216, 64, 64, 0.6);
+}
+
+.graphic-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* CONTROLS */
+.carousel-controls {
+    display: flex;
+    gap: 10px;
+    z-index: 20;
+    margin-top: -45px;
+
+    justify-content: center; /* Centers them horizontally */
+    align-items: center;     /* Aligns them vertically with each other */
+    width: 100%;
+}
+
+.carousel-controls button {
+    /* 1. Remove the circle look */
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    backdrop-filter: none;
+    
+    /* 2. Add the invisible underline base */
+    border-bottom: 2px solid transparent;
+    
+    /* 3. Typography & Spacing */
+    color: white;
+    font-size: 1.2rem; /* Slightly larger arrows */
+    padding: 0 10px 5px 10px; /* Space for the underline */
+    
+    /* Remove fixed width/height so it fits the icon */
+    width: auto; 
+    height: auto;
+    
+    cursor: pointer;
+    transition: var(--transition); /* Use your global transition */
+    opacity: 0.7;
+}
+
+.carousel-controls button:hover {
+    /* 4. The Hover Effect: Color + Underline */
+    background: transparent;
+    color: var(--accent-bright);
+    border-bottom-color: var(--accent-bright);
+    opacity: 1;
+    
+    /* Optional: Slight lift instead of scale */
+    transform: translateY(-3px); 
+}
+
+@media (max-width: 768px) {
+    .carousel-scene { perspective: 1200px; }
+    .carousel { width: 260px; height: 360px; }
+    .graphic-item { width: 240px; height: 340px; }
+}

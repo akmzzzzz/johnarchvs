@@ -1,0 +1,224 @@
+/* --- SPLIT LAYOUT CONTAINER --- */
+.split-layout {
+    width: 100%;
+    /* 1. ALIGNMENT FIX: Match Hero & Graphics padding */
+    padding: 0 8%; 
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    margin-top: 5vh; /* Optional: Slight top spacing */
+}
+
+/* --- SECTION 1: SERVICES LAYOUT --- */
+.services-column {
+    display: grid;
+    /* Keeps the side-by-side layout but respects the new padding */
+    grid-template-columns: 400px 1fr;
+    gap: 150px; 
+    width: 100%;
+    align-items: start;
+}
+
+/* --- TEXT SIDE --- */
+.service-text-sticky {
+    position: static; /* Keeps it floating while you scroll */
+    top: 150px;
+    padding-right: 20px;
+}
+
+/* 2. TITLE FIX: Exact match to Graphics/Video Headers */
+.service-text-sticky .section-title {
+    font-size: clamp(2.5rem, 5vw, 4rem); /* Match Graphics H2 */
+    font-weight: 800;
+    margin: 0 0 20px 0;
+    padding: 0;
+    text-align: left;
+    color: var(--text-on-dark);
+    text-transform: lowercase; /* Match lowercase style */
+    letter-spacing: -1px;
+    line-height: 1;
+}
+
+/* Optional: If you use a <span> for color in the future */
+.service-text-sticky .section-title span {
+    color: var(--accent-bright);
+}
+
+.service-description {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 0;
+    max-width: 100%;
+}
+
+/* --- CARDS SIDE --- */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+/* --- CARD ANIMATIONS --- */
+.service-wrapper {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    cursor: pointer;
+    transform-origin: bottom right;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.service-wrapper.is-flipped {
+    transform: rotate(-1deg); 
+    z-index: 20; 
+}
+
+.service-tile-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* FRONT FACE */
+.service-face.service-front {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    color: rgba(255,255,255,0.8);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* BACK FACE */
+.service-face.service-back {
+    position: absolute;
+    inset: 0; 
+    z-index: 20;
+    background: var(--accent-bright); 
+    border: 1px solid var(--accent-bright);
+    border-radius: 20px;
+    color: white; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+    -webkit-clip-path: circle(0% at 100% 100%);
+    clip-path: circle(0% at 100% 100%);
+    transition: clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.service-face.service-back h3 {
+    color: white; 
+    margin-top: 0;
+    font-size: 1.3rem;
+}
+
+.service-face.service-back p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.service-wrapper.is-flipped .service-face.service-back {
+    -webkit-clip-path: circle(150% at 100% 100%);
+    clip-path: circle(150% at 100% 100%);
+}
+
+.tile-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.tag-container { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.tag {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 50px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255,255,255,0.8);
+}
+
+/* --- SECTION 2: TOOLS --- */
+.tools-column {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 80px;
+}
+
+.tools-title {
+    font-size: 2rem;
+    color: var(--text-on-dark);
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.tool-card {
+    width: 140px;
+    padding: 20px 10px;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--accent-bright);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 700;
+    transition: var(--transition);
+}
+
+.tool-card span {
+    display: block;
+    font-size: 2.2rem;
+    color: var(--text-on-dark);
+    margin-bottom: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.tool-card:hover {
+    border-color: var(--accent-bright);
+    transform: translateY(-5px);
+    background: rgba(216, 64, 64, 0.1);
+}
+
+/* --- RESPONSIVE FIX --- */
+@media (max-width: 1024px) {
+    .services-column {
+        grid-template-columns: 1fr; /* Stack Vertical */
+        gap: 50px;
+    }
+    
+    .service-text-sticky {
+        position: static;
+        text-align: center; /* Center align on mobile like other headers */
+        padding-right: 0;
+    }
+    
+    .service-text-sticky .section-title {
+        text-align: center;
+    }
+
+    .service-description {
+        margin: 0 auto; /* Center description text block */
+    }
+}
