@@ -12,10 +12,10 @@
     
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers Form Vertically */
+    justify-content: center; 
 }
 
-/* --- HEADER (Matches Graphics/Hero) --- */
+/* --- HEADER --- */
 .contact-header {
     width: 100%;
     margin-bottom: 60px;
@@ -59,7 +59,10 @@
 }
 
 .email-link {
-    font-size: 2rem;
+    /* FIX 1: Responsive Font Size. 
+       Shrinks automatically on smaller screens so it doesn't overflow. */
+    font-size: clamp(1.2rem, 4vw, 2rem); 
+    
     color: var(--text-on-dark);
     text-decoration: none;
     font-weight: 300;
@@ -67,6 +70,9 @@
     align-self: flex-start;
     padding-bottom: 5px;
     transition: var(--transition);
+    
+    /* FIX 2: Safety net for very long emails */
+    word-break: break-word; 
 }
 
 .email-link:hover {
@@ -78,6 +84,7 @@
     display: flex;
     gap: 30px;
     margin-top: 40px;
+    flex-wrap: wrap; /* Allows wrapping on tiny screens */
 }
 
 .social-links a {
@@ -105,7 +112,6 @@
     width: 100%;
 }
 
-/* Minimalist Inputs (Bottom Border Only) */
 .form-input {
     width: 100%;
     background: transparent;
@@ -117,13 +123,15 @@
     font-size: 1rem;
     transition: var(--transition);
     outline: none;
+    
+    /* FIX 3: Ensure padding doesn't widen the element */
+    box-sizing: border-box; 
 }
 
 .form-input:focus {
     border-bottom-color: var(--accent-bright);
 }
 
-/* Floating Label Effect */
 .form-input::placeholder {
     color: rgba(255,255,255,0.3);
     text-transform: uppercase;
@@ -131,13 +139,13 @@
     font-size: 0.8rem;
 }
 
-/* Submit Button (Reuses your Hero Button Style) */
+/* Submit Button */
 .submit-btn {
     background: transparent;
     border: none;
     color: var(--text-on-dark);
     text-transform: lowercase;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     font-weight: 300;
     letter-spacing: 4px;
     padding: 15px 0;
@@ -155,20 +163,46 @@
     letter-spacing: 6px; 
 }
 
-/* RESPONSIVE */
+/* --- RESPONSIVE TABLET FIXES --- */
 @media (max-width: 1024px) {
     #contact-section {
-        /* Allow height to grow on mobile if content stacks */
         height: auto; 
-        padding-top: 150px; 
+        padding-top: 100px; 
+        padding-bottom: 100px;
     }
 
     .contact-container {
         grid-template-columns: 1fr; /* Stack vertically */
         gap: 60px;
     }
-    
+}
+
+/* --- RESPONSIVE MOBILE FIXES --- */
+@media (max-width: 768px) {
+    #contact-section {
+        /* FIX 4: Reduce side padding to give content more room */
+        padding: 80px 5% 80px 5%;
+    }
+
+    .contact-header {
+        margin-bottom: 40px;
+    }
+
     #contact-section h2 {
-        font-size: 3rem;
+        font-size: 2.5rem; /* Manageable size */
+    }
+
+    .email-link {
+        /* FIX 5: Ensure email fits on phone screens */
+        font-size: 1.1rem; 
+    }
+
+    .contact-form {
+        /* FIX 6: Reduce gap between inputs on mobile */
+        gap: 25px; 
+    }
+    
+    .social-links {
+        gap: 20px;
     }
 }
