@@ -80,6 +80,11 @@
     backface-visibility: hidden;
     opacity: 1;
     transition: all 0.5s ease;
+
+    backface-visibility: visible !important; 
+    
+    /* ADD THIS: Tells mobile browser to not wait for zoom gestures */
+    touch-action: manipulation;
     cursor: pointer;
     
     pointer-events: auto; /* CRITICAL: Re-enable clicks on cards */
@@ -110,6 +115,7 @@
     justify-content: center; /* Centers them horizontally */
     align-items: center;     /* Aligns them vertically with each other */
     width: 100%;
+    pointer-events: none;
 }
 
 .carousel-controls button {
@@ -134,6 +140,7 @@
     cursor: pointer;
     transition: var(--transition); /* Use your global transition */
     opacity: 0.7;
+    pointer-events: auto;
 }
 
 .carousel-controls button:hover {

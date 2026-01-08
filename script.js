@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cloud = document.getElementById('card-cloud');
 
     // 2A. Main Graphics Carousel
+// 2A. Main Graphics Carousel
     if (carouselSpinner) {
         carouselSpinner.innerHTML = ''; 
 
@@ -97,14 +98,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
             img.src = mediumUrl;
             img.alt = `Graphic Design Project ${i + 1}`;
-            img.loading = "lazy"; 
+            img.loading = "lazy";
+            // Important: Prevent the image from consuming the drag event
+            img.style.pointerEvents = "none"; 
             
-            img.addEventListener('click', (e) => {
-                e.stopPropagation();
+            item.appendChild(img);
+
+            // --- THE FIX: Handle both Click and Touch End ---
+            
+            // 1. Standard Click (Desktop)
+            item.addEventListener('click', (e) => {
+                e.stopPropagation(); // Stop bubbling
+                e.preventDefault();  // Stop default link behavior
                 openLightbox(hdUrl); 
             });
 
-            item.appendChild(img);
+            // 2. Mobile Touch Fix (Force triggering if click fails)
+            let touchStartTime;
+            item.addEventListener('touchstart', () => {
+                touchStartTime = Date.now();
+            }, { passive: true });
+
+            item.addEventListener('touchend', (e) => {
+                // If the tap was quick (under 200ms), treat it as a click.
+                // This bypasses 3D transform hit-test bugs.
+                if (Date.now() - touchStartTime < 200) {
+                    e.preventDefault(); 
+                    e.stopPropagation();
+                    openLightbox(hdUrl);
+                }
+            });
+
             carouselSpinner.appendChild(item);
         });
     }
